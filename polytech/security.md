@@ -22,6 +22,9 @@ theme: gaia
   - Inconvenient : 
     - Le mot de passe utilisateur est dans la requête
     - On ne peux pas revoquer un terminal
+    - Les mots de passe sont parfois faible
+  - Usage :
+    - Dans les ui pour recuperer un token
 ---
 ### Certificat
   - Format
@@ -31,11 +34,35 @@ theme: gaia
   - Inconvenient :
     - Il faut bien penser a mettre a jour le Certificat
     - Pas revocable
-    - La chaine d'aprovisionnement du Certificat est souvent pas terrible (mail)
+    - La Gestion du Certificat est souvent pas terrible (mail)
+    - Un utilisateur ne peux pas le retenir
+  - Usage :
+    - Api serveur - serveur
 ---
 ### Token
+  - Token Enregistre
+    - Avantage :
+      - Les tokens sont revocable
+      - 
+    - Inconvenient
+      - Il faut aller en base voir si le token est valide 
+      - Un utilisateur 
+    - Usage :
+      - Des api serveur - serveur avec une ui pour de management des tokens (exemple : github)
+      - Des ui avec l'option "keep me connected" [facebook](le lien vers la page d'admin)
   - Token Signé
-  - Token Enregistré
+      - Avantage 
+        - Pas besoin d'une base
+      - Inconvenient
+        - Un utilisateur ne peux pas le retenir
+      - Usage :
+        - Pour une ui avec des token de courte duree
+---
+### Les Authentifications forte
+Exemple : 
+   - jeton rsa 
+   - Authenticator
+   - Generateur de token
 ---
 ### Jwt
 
