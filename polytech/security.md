@@ -24,6 +24,14 @@ theme: gaia
     - On ne peux pas revoquer un terminal
 ---
 ### Certificat
+  - Format
+    - 
+  - Avantage :
+    -
+  - Inconvenient :
+    - Il faut bien penser a mettre a jour le Certificat
+    - Pas revocable
+    - La chaine d'aprovisionnement du Certificat est souvent pas terrible (mail)
 ---
 ### Token
   - Token Signé
