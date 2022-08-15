@@ -64,6 +64,9 @@ Exemple :
    - Authenticator
    - Generateur de token
 ---
+### La meilleure solution ? 
+- Aucune ca dependra de l'environnement
+---
 ### Jwt
 
 ---
