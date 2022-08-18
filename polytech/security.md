@@ -60,9 +60,11 @@ theme: gaia
 ---
 ### Les Authentifications forte
 Exemple : 
-   - jeton rsa 
-   - Authenticator
+   - Jeton rsa 
+   - Authenticator (google)
    - Generateur de token
+   - Sms 
+   - ...
 ---
 ### La meilleure solution ? 
 - Aucune ca dependra de l'environnement
@@ -71,6 +73,24 @@ Exemple :
 
 ---
 ## Authorization
+---
+### Rbac (Role based access control)
+ - Gestion par role
+    - Admin
+    - Commercial
+    - ...
+---
+### Abac (Attributes based access control)
+ - Gestion par attribut
+    - Localisation (Netflix)
+    - Age (Disney +)
+    - Relation (Facebook)
+    - ...
+---
+### Rbac vs Abac
+![Calin](https://giphy.com/gifs/moodman-kids-race-friendship-VduFvPwm3gfGO8duNN)
+
+
 ---
 ## Accounting 
 ---
