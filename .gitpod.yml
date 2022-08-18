@@ -2,3 +2,6 @@
 vscode:
   extensions:
     - marp-team.marp-vscode
+    - vscjava.vscode-java-pack
+    - redhat.java
+    - GabrielBB.vscode-lombok
