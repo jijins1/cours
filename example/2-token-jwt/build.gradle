@@ -4,7 +4,7 @@ plugins {
   id 'java'
 }
 
-group = 'ovh.ruokki.course.basic'
+group = 'ovh.ruokki.course.jwt'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 

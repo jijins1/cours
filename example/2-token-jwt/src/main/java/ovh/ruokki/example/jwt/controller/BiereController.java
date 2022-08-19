@@ -1,4 +1,4 @@
-package ovh.ruokki.example.basic.controller;
+package ovh.ruokki.example.jwt.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ovh.ruokki.example.basic.controller.dto.Biere;
+import ovh.ruokki.example.jwt.controller.dto.Biere;
 
 @RestController
 @RequestMapping("bieres")

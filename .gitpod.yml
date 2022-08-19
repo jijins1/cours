@@ -6,3 +6,4 @@ vscode:
     - vscjava.vscode-java-pack
     - redhat.java
     - GabrielBB.vscode-lombok
+    - richardwillis.vscode-gradle
