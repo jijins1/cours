@@ -86,8 +86,7 @@ Exemple :
     - ...
 ---
 ### Rbac vs Abac
-![Calin](https://giphy.com/gifs/moodman-kids-race-friendship-VduFvPwm3gfGO8duNN)
-
+![Calin](https://giphy.com/gifs/moodman-kids-race-friendship-VduFvPwm3gfGO8duNN) 
 
 ---
 ## Accounting 
