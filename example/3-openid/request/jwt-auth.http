@@ -1,0 +1,23 @@
+#Pas authentifié
+http://localhost:12035/bieres
+
+
+###
+
+# Echec basic auth
+POST http://localhost:12035/bieres
+Authorization: Bearer dXNlcjpwYXNzd29yZA==
+Content-Type: application/json
+
+{"nom":"Paix Dieu","degres":10}
+
+###
+# Reussite
+POST http://localhost:12035/bieres
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJMw6lvIEdlcmJlcm9uIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJQb2x5dGVjaCJ9.dIT7U7jlMCKFMaWa4mvSbXPtS9gzkNOcAuP5UL7_0-U
+Content-Type: application/json
+
+{"nom":"Desperados","degres":3.4}
+
+
+
