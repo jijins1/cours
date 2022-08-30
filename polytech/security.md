@@ -3,6 +3,7 @@ marp: true
 theme: gaia
 --- 
 # Security 
+
 ---
 ## AAA
  1. Authentification : Identifier l'utilisateur
@@ -10,8 +11,19 @@ theme: gaia
  3. Accounting(tracing) : Suivre les actions de l'utilisateur 
 ---
 ## Authentification
+
 ---
-### Ajouter un slide : Ce que l'utilisateur Sais/Possede/Est 
+### Ce que l'utilisateur Sait/Possede/Est 
+- Sait : Un mot de passe, une question secrete
+- Possede : Un telephone, un token rsa, un carte d'identite
+- Est : Une empreinte, un visage
+---
+### Authentification par mot de passe 
+Plusieurs normes :
+ - Basic Auth -> Header
+ - Digest Auth -> Header hashé
+ - Form-based Auth -> Form Field (requete dedié)
+
 ---
 ### Basic Auth
   - Format
@@ -19,27 +31,33 @@ theme: gaia
      - Exemple : `Authorization: Basic cGluZ29vOjEyMzQ1` name: pingoo, mdp:1234
   - Avantage :
     - Correspond au format classique utilisateur/mdp
-  - Inconvenient : 
-    - Le mot de passe utilisateur est dans la requête
-    - On ne peux pas revoquer un terminal
-    - Les mots de passe sont parfois faible
-  - Usage :
-    - Dans les ui pour recuperer un token
+  - Extension:
+    - WWW-Authenticate : Ajoute des information sur l'authentification
 ---
-### Certificat
-  - Format
-    - 
-  - Avantage :
-    -
+### Digest Auth*
+ - Principe identique au basic auth mais le contenu est hashé
+ - Format
+   - `Authorization: Digest md5(name:mdp)`
+ - Avantage : 
+   - On envoie pas le mdp
+ - Inconvenient 
+   - Le serveur ne connait pas le mdp envoyé
+---
+### Gestion d'un mot de passe*
+- On ne stock jamais un mdp 
+- On stock un hash du mdp
+- On ajoute un salt dans le hash
+- Exemple : BCrypt (Salt, inclut, non reversible)
+---
+### Certificat 
   - Inconvenient :
-    - Il faut bien penser a mettre a jour le Certificat
+    - Il faut bien penser à mettre à jour le Certificat
     - Pas revocable
-    - La Gestion du Certificat est souvent pas terrible (mail)
-    - Un utilisateur ne peux pas le retenir
-  - Usage :
-    - Api serveur - serveur
+    - La Gestion du Certificat est souvent pas terrible
+  - Exemple :
+    - Api Kubernetes par defaut
 ---
-### Token Enregistre
+### Token Enregistré
   - Avantage :
     - Les tokens sont revocable
   - Inconvenient
@@ -50,29 +68,57 @@ theme: gaia
     - Des ui avec l'option "keep me connected" [facebook](le lien vers la page d'admin)
 ---
 ### Token Signé
-    - Avantage 
-      - Pas besoin d'une base
-    - Inconvenient
-      - Un utilisateur ne peux pas le retenir
+  - Avantage 
+    - Pas besoin d'une base
+  - Inconvenient
+    - Un utilisateur ne peut pas le retenir
+---
+### Jwt (JSON Web Token)*
+- Format
+    - 3 Parties en base 64
+        - Le header -> Un json avec l'algo de signature
+        - body -> des informations sur l'utilisateur
+        - la signature -> hash(base64UrlEncode(header) + "." + base64UrlEncode(payload), unSecret)
+---
+### Jwt Exemple*
+```json
+{
+"alg": "HS256",
+"typ": "JWT"
+}.{
+"sub": "1234567890",
+"name": "John Doe",
+"iat": 1516239022
+}.secret
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.PcmVIPbcZl9j7qFzXRAeSyhtuBnHQNMuLHsaG5l804A
+``` 
+
 ---
 ## Single Sign One with SAML
 - Security Assertion Markup Language
-
+![saml](assets/saml.png)
 ---
-
+## Single Sign One with SAML
+- Avantages
+  - Les utilisateurs ont un mot de passe sur un pool d'appli
+  - Les utilisateurs ne s'authentifient qu'une fois sur un pool d'appli
+  - L'authentification aupres de l'identity provider peut être renforcée sans gener l'ux
+  - Compatible avec annuaires d'entreprise (LDAP/AD)
 ---
 ### Les Authentifications forte
-On cumule 2 authentification 
+On cumule les authentifications
+- Avantages 
+  - On reduit les risques
+- Désavantages
+  - L'experience utilisateur moins simple
 Exemple : 
    - Jeton rsa 
    - Authenticator (google)
    - Generateur de token
    - Sms 
    - ...
----
-### Jwt
 
----
 ## Authorization
 ---
 ### Rbac (Role based access control)
