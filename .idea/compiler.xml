@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="jwt" target="17" />
+      <module name="jwt.main" target="17" />
+      <module name="jwt.test" target="17" />
+      <module name="ovh.ruokki.course.jwt.basic" target="17" />
+      <module name="ovh.ruokki.course.jwt.basic.main" target="17" />
+      <module name="ovh.ruokki.course.jwt.basic.test" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

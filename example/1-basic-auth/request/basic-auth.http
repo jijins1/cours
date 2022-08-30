@@ -1,19 +1,26 @@
 #Public
-http://localhost:8080/bieres
+http://localhost:12035/bieres
 
 
 ###
 
 # Prive
-POST http://localhost:8080/bieres
+POST http://localhost:12035/bieres
 Authorization: Basic dXNlcjpwYXNzd29yZA==
 Content-Type: application/json
 
 {"nom":"Paix Dieu","degres":10}
 
 ###
+# Prive
+GET http://localhost:12035/login
+Authorization: Basic dXNlcjpwYXNzd29yZA==
+Content-Type: application/json
+
+
+###
 # Prive Mauvais mot de passe
-POST http://localhost:8080/bieres
+POST http://localhost:12035/bieres
 Authorization: Basic dXNlcjpwYXNzd29yZDI=
 Content-Type: application/json
 

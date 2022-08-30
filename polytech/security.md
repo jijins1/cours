@@ -48,24 +48,27 @@ theme: gaia
   - Usage :
     - Des api serveur - serveur avec une ui pour de management des tokens (exemple : github)
     - Des ui avec l'option "keep me connected" [facebook](le lien vers la page d'admin)
-#### Token Signé
+---
+### Token Signé
     - Avantage 
       - Pas besoin d'une base
     - Inconvenient
       - Un utilisateur ne peux pas le retenir
-    - Usage :
-      - Pour une ui avec des token de courte duree
+---
+## Single Sign One with SAML
+- Security Assertion Markup Language
+
+---
+
 ---
 ### Les Authentifications forte
+On cumule 2 authentification 
 Exemple : 
    - Jeton rsa 
    - Authenticator (google)
    - Generateur de token
    - Sms 
    - ...
----
-### La meilleure solution ? 
-- Aucune ca dependra de l'environnement
 ---
 ### Jwt
 
@@ -77,6 +80,8 @@ Exemple :
     - Admin
     - Commercial
     - ...
+ - Exemple d'api :
+   - l'Api Kubernetes
 ---
 ### Abac (Attributes based access control)
  - Gestion par attribut
@@ -84,10 +89,17 @@ Exemple :
     - Age (Disney +)
     - Relation (Facebook)
     - ...
+ - Exemple d'api : 
+   - ...
 ---
 ### Rbac vs Abac
 ![Calin](https://giphy.com/gifs/moodman-kids-race-friendship-VduFvPwm3gfGO8duNN) 
-
+- Gestion des authorization large avec les roles
+  - On affine les droits avec les attributs
+---
+### Deleguer l'authorisation
+- Demander à un tier de gerer l'authorization  
+  - On partage les 
 ---
 ## Accounting 
 ---

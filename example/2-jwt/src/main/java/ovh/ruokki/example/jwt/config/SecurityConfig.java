@@ -1,5 +1,7 @@
-package ovh.ruokki.example.basic.config;
+package ovh.ruokki.example.openid.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,35 +14,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
-
-import org.slf4j.Logger;
-
-import org.slf4j.LoggerFactory;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     
-    
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsManager userDetailsService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsManager userDetailsService)
+            throws Exception {
         http
-        .authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
-        .httpBasic(withDefaults())
-                .cors().disable()
-                .csrf().disable() //Desactivation de la protection csrf
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
+                .authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
+                .addFilterAfter(new JwtFilter(), DigestAuthenticationFilter.class)
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
+        
         return http.build();
     }
-
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    
     @Bean
     public UserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
@@ -55,5 +52,5 @@ public class SecurityConfig {
                 .build();
         return new InMemoryUserDetailsManager(user);
     }
-
+    
 }

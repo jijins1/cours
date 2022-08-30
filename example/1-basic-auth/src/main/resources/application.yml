@@ -1,0 +1,7 @@
+server:
+  port: 12035
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
