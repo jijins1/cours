@@ -27,6 +27,7 @@ Plusieurs normes :
 ---
 ### Basic Auth
   - Format
+     - Dans le Header des requêtes
      - `Authorization: Basic name:mdp` (name:mdp -> en Base64)
      - Exemple : `Authorization: Basic cGluZ29vOjEyMzQ1` name: pingoo, mdp:1234
   - Avantage :
@@ -42,19 +43,21 @@ Plusieurs normes :
    - On envoie pas le mdp
  - Inconvenient 
    - Le serveur ne connait pas le mdp envoyé
+   - Un peu obsolete avec https
 ---
 ### Gestion d'un mot de passe*
-- On ne stock jamais un mdp 
+- On ne stock jamais un mdp (Exemple : linkedin,...)   [haveibeenpwned](https://haveibeenpwned.com/)
 - On stock un hash du mdp
 - On ajoute un salt dans le hash
 - Exemple : BCrypt (Salt, inclut, non reversible)
 ---
-### Certificat 
+### Certificat
+  - Certificat Client : Different du certificat d'https (Qui est un certificat serveur)
   - Inconvenient :
     - Il faut bien penser à mettre à jour le Certificat
-    - Pas revocable
     - La Gestion du Certificat est souvent pas terrible
-  - Exemple :
+    - (Pas revocable)
+- Exemple :
     - Api Kubernetes par defaut
 ---
 ### Token Enregistré
@@ -62,7 +65,6 @@ Plusieurs normes :
     - Les tokens sont revocable
   - Inconvenient
     - Il faut aller en base voir si le token est valide 
-    - Un utilisateur 
   - Usage :
     - Des api serveur - serveur avec une ui pour de management des tokens (exemple : github)
     - Des ui avec l'option "keep me connected" [facebook](le lien vers la page d'admin)
@@ -109,7 +111,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 ### Les Authentifications forte
 On cumule les authentifications
 - Avantages 
-  - On reduit les risques
+  - On réduit les risques
 - Désavantages
   - L'experience utilisateur moins simple
 Exemple : 
@@ -143,9 +145,23 @@ Exemple :
 - Gestion des authorization large avec les roles
   - On affine les droits avec les attributs
 ---
-### Deleguer l'authorisation
-- Demander à un tier de gerer l'authorization  
-  - On partage les 
+### OAuth
+- Protocole d'Autorisation
+- Les acteurs
+  - Resource Provider - Gmail
+  - Resource owner - martin.dupont@gmail.com
+  - Authorization serveur - Google
+  - Application - FishApp
+
+---
+### OpenId Connect (OIDC)
+- Protocole d'authentification
+  - Basé sur Oauth
+  - Principe similaire à OAuth
+  - L'authorization serveur va partager les informations de l'utilisateur dans le token
+---
+### Oauth sequence
+![Oauth](./assets/oauth2.png)
 ---
 ## Accounting 
 ---

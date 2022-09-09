@@ -1,0 +1,32 @@
+@startuml
+actor user as user
+
+group Interface FishApp
+user -> navigateur : Connect with Gmail
+navigateur -> app: : Connect With Gmail
+
+app -> navigateur : Redirect to https://accounts.google.com/..... (Some parameters)
+navigateur -> navigateur : Go to https://accounts.google.com/..... (Some parameters)
+end
+group Interface Google
+navigateur -> google : Authorise FishApp
+google --> navigateur : Connecte toi
+navigateur --> user : Connecte toi
+user --> navigateur : Je suis pingoo
+navigateur --> google : Je suis pingoo
+google --> navigateur : ok
+navigateur -> google : Authorise FishApp
+google -> navigateur : Tu veux que fishApp accede à : la gestion des mails ?
+navigateur -> user : Tu veux que fishApp accede à : la gestion des mails ?
+user -> navigateur :  Oui
+navigateur -> google :  Oui
+google -> navigateur : Utilise ce token sur FishApp et redirect to http://fishApp/
+navigateur -> navigateur : Go to http://fishApp/
+end
+group Interface fishApp
+navigateur -> app: Tiens google m'a donné ce token
+app -> navigateur: Ok je vais, pouvoir discuter avec google retourne sur l'accueil
+navigateur -> navigateur : Go to accueil
+app -> gmail : Je suis fish app : Envoi un mail de la part de Utilisateur à XXXX
+end
+@enduml
