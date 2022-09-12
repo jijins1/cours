@@ -1,4 +1,4 @@
-import { ErrorHandler, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +10,9 @@ import { GlobalErrorHandler } from './service/error.service';
 import { ErrorListComponent } from './component/error-list/error-list.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HeaderInterceptor } from './interceptor/header.interceptor';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { GoogleService } from './service/google.service';
+import { LoginService } from './service/login.service';
 
 @NgModule({
   declarations: [
@@ -22,10 +25,18 @@ import { HeaderInterceptor } from './interceptor/header.interceptor';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    OAuthModule.forRoot()
 
   ],
   providers: [{
+    provide: APP_INITIALIZER,
+    useFactory: (loginService: LoginService)=> {
+      return () => loginService.initConnect();
+    },
+    deps: [LoginService],
+    multi: true
+  }, {
     provide: ErrorHandler,
     useClass: GlobalErrorHandler,
     multi: false

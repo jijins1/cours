@@ -164,4 +164,11 @@ Exemple :
 ![Oauth](./assets/oauth2.png)
 ---
 ## Accounting 
+- Suivre les actions de l'utilisateur
+  - Pour des besoins d'audit
+  - Via des logs
+  - Via des informations en base
+  - Dans certain contexte c'est une obligation
+---
+
 ---

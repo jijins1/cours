@@ -1,14 +1,11 @@
 server:
-  port: 12036
+  port: 12035
 spring:
   security:
     oauth2:
-      client:
-        registration:
-          google:
-            client-id: 866645626978-q8kpvoja0c6f3oub3kpooh92p0u1tukq.apps.googleusercontent.com
-            client-secret: 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
-logging:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
   level:
     org:
       springframework:
