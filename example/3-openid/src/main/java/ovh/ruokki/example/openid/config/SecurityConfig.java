@@ -2,6 +2,9 @@ package ovh.ruokki.example.openid.config;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +17,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,7 +31,7 @@ public class SecurityConfig {
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, Converter<Jwt, ? extends AbstractAuthenticationToken> authenticationConverter, ServerProperties serverProperties)
+    public SecurityFilterChain filterChain(HttpSecurity http, Converter<Jwt, ? extends AbstractAuthenticationToken> authenticationConverter)
             throws Exception {
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(authenticationConverter);
         http.anonymous();
@@ -45,16 +49,7 @@ public class SecurityConfig {
         return http.build();
     }
     
-    public interface Jw2tAuthoritiesConverter extends Converter<Jwt, Collection<? extends GrantedAuthority>> {
-    }
     
-    public interface Jwt2AuthenticationConverter extends Converter<Jwt, JwtAuthenticationToken> {
-    }
-    
-    @Bean
-    public Jwt2AuthenticationConverter authenticationConverter(Jw2tAuthoritiesConverter authoritiesConverter) {
-        return jwt -> new JwtAuthenticationToken(jwt, authoritiesConverter.convert(jwt));
-    }
     
     private CorsConfigurationSource corsConfigurationSource() {
         // Very permissive CORS config...
@@ -69,4 +64,40 @@ public class SecurityConfig {
         
         return source;
     }
+    
+    
+    
+    public interface Jw2tAuthoritiesConverter extends Converter<Jwt, Collection<? extends GrantedAuthority>> {
+    
+    }
+    
+    public interface Jwt2AuthenticationConverter extends Converter<Jwt, JwtAuthenticationToken> {
+    }
+    
+    @Bean
+    public Jwt2AuthenticationConverter authenticationConverter(Jw2tAuthoritiesConverter authoritiesConverter) {
+        return jwt -> new JwtAuthenticationToken(jwt, authoritiesConverter.convert(jwt), jwt.getClaimAsString("name"));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Bean
+    public Jw2tAuthoritiesConverter authoritiesConverter() {
+        // This is a converter for roles as embedded in the JWT by a Keycloak server
+        // Roles are taken from both realm_access.roles & resource_access.{client}.roles
+        return jwt -> {
+            final var realmAccess = (Map<String, Object>) jwt.getClaims().getOrDefault("realm_access", Map.of());
+            final var realmRoles = (Collection<String>) realmAccess.getOrDefault("roles", List.of());
+            
+            final var resourceAccess = (Map<String, Object>) jwt.getClaims().getOrDefault("resource_access", Map.of());
+            // We assume here you have "spring-addons-confidential" and "spring-addons-public" clients configured with "client roles" mapper in Keycloak
+            final var confidentialClientAccess = (Map<String, Object>) resourceAccess.getOrDefault("spring-addons-confidential", Map.of());
+            final var confidentialClientRoles = (Collection<String>) confidentialClientAccess.getOrDefault("roles", List.of());
+            final var publicClientAccess = (Map<String, Object>) resourceAccess.getOrDefault("spring-addons-public", Map.of());
+            final var publicClientRoles = (Collection<String>) publicClientAccess.getOrDefault("roles", List.of());
+            
+            return Stream.concat(realmRoles.stream(), Stream.concat(confidentialClientRoles.stream(), publicClientRoles.stream()))
+                    .map(SimpleGrantedAuthority::new).toList();
+        };
+    }
+    
 }

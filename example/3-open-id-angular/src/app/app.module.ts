@@ -13,20 +13,26 @@ import { HeaderInterceptor } from './interceptor/header.interceptor';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { GoogleService } from './service/google.service';
 import { LoginService } from './service/login.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BandeauComponent } from './component/bandeau/bandeau.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     BieresComponent,
-    ErrorListComponent
+    ErrorListComponent,
+    BandeauComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
+    BrowserAnimationsModule,
+    MatButtonModule
 
   ],
   providers: [{

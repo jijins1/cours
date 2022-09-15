@@ -3,6 +3,7 @@ import { map, Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { GoogleService } from './google.service';
 import { Router } from '@angular/router';
+import { Utilisateur } from '../model/Utilisateur';
 
 @Injectable({
   providedIn: 'root'
@@ -74,5 +75,9 @@ export class LoginService {
 
   authHasGoogle() {
     return this.googleService.isConnect();
+  }
+
+  getUtilisateur(): Observable<Utilisateur> {
+    return this.httpClient.get<Utilisateur>('/api/user', {});
   }
 }

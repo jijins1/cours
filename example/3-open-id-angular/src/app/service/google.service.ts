@@ -12,8 +12,8 @@ export const authCodeFlowConfig: AuthConfig = {
   // clientId: 'server.code',
   clientId: '866645626978-q8kpvoja0c6f3oub3kpooh92p0u1tukq.apps.googleusercontent.com',
 
-
-  scope: 'openid',
+  oidc:true,
+  scope: 'openid email profile',
 
   showDebugInformation: true,
   sessionChecksEnabled: true,

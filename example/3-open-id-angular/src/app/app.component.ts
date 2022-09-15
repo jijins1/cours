@@ -10,10 +10,8 @@ export class AppComponent {
   title = 'open-id-angular';
 
 
-  constructor(private loginService: LoginService) {
+  constructor() {
   }
 
-  logout() {
-    this.loginService.logout();
-  }
+
 }

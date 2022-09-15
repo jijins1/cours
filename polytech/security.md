@@ -35,6 +35,48 @@ Plusieurs normes :
   - Extension:
     - WWW-Authenticate : Ajoute des information sur l'authentification
 ---
+### Spring Security
+- Architecture
+- ![Architecture](assets/spring-security-filters.png)
+---
+## Filter
+[javax.servlet.Filter](https://docs.oracle.com/javaee/6/api/javax/servlet/Filter.html)
+- Interface qui ne provient pas de spring 
+- Ne concerne pas uniquement http
+- Argument :
+  - ServletRequest request : Les données de la requetes
+  - ServletResponse response : Les données de la reponse
+  - FilterChain chain : Le prochain filtre a appeler avec ServletRequest et ServletResponse (Potentiellement d'autre que ceux en entrée)
+- Implementation à connaitre :
+    - GenericFilterBean
+    - OncePerRequestFilter
+---
+### Activer Spring security
+Ajout de la dépendance
+```
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+```
+... et c'est tout
+---
+### Configurer spring security* 
+- Ajouter une SecurityFilterChain avec le builder HttpSecurity
+```java
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http)
+            throws Exception {
+        http.authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
+         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
+        
+        return http.build();
+    }
+
+```
+---
+### Liée Spring security à nos utilisateur
+- Implementer UserDetailService : 
+    - Interface qui permet d'acceder au information d'un utilisateur ()
+
+---
 ### Digest Auth*
  - Principe identique au basic auth mais le contenu est hashé
  - Format
@@ -152,16 +194,15 @@ Exemple :
   - Resource owner - martin.dupont@gmail.com
   - Authorization serveur - Google
   - Application - FishApp
-
+---
+### Oauth sequence
+![Oauth](./assets/oauth2.png)
 ---
 ### OpenId Connect (OIDC)
 - Protocole d'authentification
   - Basé sur Oauth
   - Principe similaire à OAuth
   - L'authorization serveur va partager les informations de l'utilisateur dans le token
----
-### Oauth sequence
-![Oauth](./assets/oauth2.png)
 ---
 ## Accounting 
 - Suivre les actions de l'utilisateur
