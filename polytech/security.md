@@ -174,6 +174,24 @@ Exemple :
  - Exemple d'api :
    - l'Api Kubernetes
 ---
+### Gestion de roles Spring
+- Utilisation de UserDetails#getAuthorithies > List des roles de l'utilisateur 
+- Dans le builder utilitiser `.hasRole()` (Voir les exemples)
+- Sur les methodes/Classe l'annotation `@RolesAllowed/@Secured`
+---
+### Hierarchie de role 
+Ajouter un bean [Documentation Spring](https://docs.spring.io/spring-security/reference/servlet/authorization/architecture.html#authz-hierarchical-roles)
+```java
+@Bean
+AccessDecisionVoter hierarchyVoter() {
+    RoleHierarchy hierarchy = new RoleHierarchyImpl();
+    hierarchy.setHierarchy("ROLE_ADMIN > ROLE_STAFF\n" +
+            "ROLE_STAFF > ROLE_USER\n" +
+            "ROLE_USER > ROLE_GUEST");
+    return new RoleHierarchyVoter(hierarchy);
+}
+```
+---
 ### Abac (Attributes based access control)
  - Gestion par attribut
     - Localisation (Netflix)
@@ -182,6 +200,10 @@ Exemple :
     - ...
  - Exemple d'api : 
    - ...
+---
+### Mise en place dans spring*
+- Utiliser les annotations @PreAuthorize
+- Implementer un AccessDecisionManager (C'est compliqué)
 ---
 ### Rbac vs Abac
 ![Calin](assets/calin.gif) 
@@ -223,6 +245,4 @@ ${issuer_url}/.well-known/openid-configuration
   - Via des logs
   - Via des informations en base
   - Dans certain contexte c'est une obligation
----
-
 ---
