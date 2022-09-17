@@ -97,7 +97,7 @@ Ajout de la dépendance
   - Certificat Client : Different du certificat d'https (Qui est un certificat serveur)
   - Inconvenient :
     - Il faut bien penser à mettre à jour le Certificat
-    - La Gestion du Certificat est souvent pas terrible
+    - La Gestion du Certificat est souvent compliqué
     - (Pas revocable)
 - Exemple :
     - Api Kubernetes par defaut
@@ -122,7 +122,7 @@ Ajout de la dépendance
     - 3 Parties en base 64
         - Le header -> Un json avec l'algo de signature
         - body -> des informations sur l'utilisateur
-        - la signature -> hash(base64UrlEncode(header) + "." + base64UrlEncode(payload), unSecret)
+        - la signature -> `hash(base64UrlEncode(header) + "." + base64UrlEncode(payload), unSecret)`
 ---
 ### Jwt Exemple*
 ```json
@@ -134,7 +134,8 @@ Ajout de la dépendance
 "name": "John Doe",
 "iat": 1516239022
 }.secret
-
+```
+```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.PcmVIPbcZl9j7qFzXRAeSyhtuBnHQNMuLHsaG5l804A
 ``` 
 
@@ -147,11 +148,11 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 - Avantages
   - Les utilisateurs ont un mot de passe sur un pool d'appli
   - Les utilisateurs ne s'authentifient qu'une fois sur un pool d'appli
-  - L'authentification aupres de l'identity provider peut être renforcée sans gener l'ux
+  - L'authentification auprés de l'identity provider peut être renforcée sans gener l'ux
   - Compatible avec annuaires d'entreprise (LDAP/AD)
 ---
 ### Les Authentifications forte
-On cumule les authentifications
+Cumule les authentifications
 - Avantages 
   - On réduit les risques
 - Désavantages
@@ -183,13 +184,13 @@ Exemple :
    - ...
 ---
 ### Rbac vs Abac
-![Calin](https://giphy.com/gifs/moodman-kids-race-friendship-VduFvPwm3gfGO8duNN) 
+![Calin](assets/calin.gif) 
 - Gestion des authorization large avec les roles
-  - On affine les droits avec les attributs
+- On affine les droits avec les attributs
 ---
 ### OAuth
 - Protocole d'Autorisation
-- Les acteurs
+- Les acteurs - Exemple
   - Resource Provider - Gmail
   - Resource owner - martin.dupont@gmail.com
   - Authorization serveur - Google
@@ -198,8 +199,20 @@ Exemple :
 ### Oauth sequence
 ![Oauth](./assets/oauth2.png)
 ---
+### Information dans le token jwt*
+- sub: 
+- email: 
+- exp:
+- name:
+- iss 
+-...
+---
+### Discovery service 
+Auto decouverte de la configuration openID 
+${issuer_url}/.well-known/openid-configuration 
+---
 ### OpenId Connect (OIDC)
-- Protocole d'authentification
+- Protocole d'authentification  
   - Basé sur Oauth
   - Principe similaire à OAuth
   - L'authorization serveur va partager les informations de l'utilisateur dans le token
