@@ -4,7 +4,7 @@ plugins {
   id 'java'
 }
 
-group = 'ovh.ruokki.course.basic'
+group = 'ovh.ruokki.course.metrique'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -16,6 +16,10 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  implementation "io.micrometer:micrometer-registry-influx:1.9.3"
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
+
+
 }
 
 tasks.named('test') {

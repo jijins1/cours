@@ -1,0 +1,23 @@
+
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: info,health,beans,metrics,endpoints,mappings
+  metrics:
+    export:
+      jmx:
+        domain: cours
+      influx:
+        uri: http://localhost:19086
+        bucket: bitcoin
+        enabled: true
+        api-version: v2
+        org: ruokki
+        step: 5s
+server:
+  port: 12037
+logging:
+  level:
+    io:
+      micrometer: DEBUG
