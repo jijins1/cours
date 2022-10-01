@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -26,7 +27,7 @@ public class SecurityConfig {
     
     
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsManager userDetailsService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
         http
         .authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
         .httpBasic(withDefaults())
@@ -39,21 +40,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.builder()
-                .passwordEncoder((t) -> {
-                    String encoded = passwordEncoder.encode(t);
-                    log.info("Encoding password {} to {}", t, encoded);
-                    return encoded;
-                })
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
     }
 
 }

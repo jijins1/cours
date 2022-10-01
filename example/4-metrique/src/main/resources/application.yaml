@@ -15,6 +15,7 @@ management:
         api-version: v2
         org: ruokki
         step: 5s
+        token: zsOhTZbBAq4K7t5OjagVrJgvNe4rSRe4NXiHE0A__HUDTYmrdjYF0PP2cGSqGNeSUJf8Dmj3z4Jo89wyWyPgfg==
 server:
   port: 12037
 logging:

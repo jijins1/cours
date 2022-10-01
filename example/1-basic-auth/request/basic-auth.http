@@ -19,9 +19,9 @@ Content-Type: application/json
 
 
 ###
-# Prive Mauvais mot de passe
+# Prive
 POST http://localhost:12035/bieres
-Authorization: Basic dXNlcjpwYXNzd29yZDI=
+Authorization: Basic dXNlcjpwYXNzd29yZA==
 Content-Type: application/json
 
 {"nom":"Desperados","degres":3.4}

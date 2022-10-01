@@ -1,4 +1,4 @@
-package ovh.ruokki.example.openid.controller.dto;
+package ovh.ruokki.example.jwt.controller.dto;
 
 public class Biere {
 

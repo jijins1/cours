@@ -1,4 +1,4 @@
-package ovh.ruokki.example.openid.config;
+package ovh.ruokki.example.jwt.config;
 
 import java.io.IOException;
 import java.util.List;

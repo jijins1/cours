@@ -1,4 +1,4 @@
-package ovh.ruokki.example.openid.config;
+package ovh.ruokki.example.jwt.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,35 +22,15 @@ public class SecurityConfig {
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsManager userDetailsService)
+    public SecurityFilterChain filterChain(HttpSecurity http)
             throws Exception {
         http
                 .authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
-                .addFilterAfter(new JwtFilter(), DigestAuthenticationFilter.class)
+                .addFilter(new JwtFilter())
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
         
         return http.build();
-    }
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
-    @Bean
-    public UserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.builder()
-                .passwordEncoder((t) -> {
-                    String encoded = passwordEncoder.encode(t);
-                    log.info("Encoding password {} to {}", t, encoded);
-                    return encoded;
-                })
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
     }
     
 }
