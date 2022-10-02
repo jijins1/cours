@@ -143,13 +143,23 @@ public SecurityFilterChain filterChain(HttpSecurity http)
     - Fait une verification avant d'acceder à une page
     - Sinon redirige vers une autre
     - Cas frequent : redirection vers la page de login
-- Exemple : auth.guard.ts/app-routing.module.ts
+- Exemple : auth.guard.ts | app-routing.module.ts |
 
 ---
 
 ### Ajouter les headers à toute les requetes
 
 - Ajouter des interceptors
+    - Implementer l'interface `HttpInterceptor`
+    - Ajouter dans le module un provider :
+  ```json
+   {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HeaderInterceptor,
+    multi: true
+    }
+  ``` 
+- Exemple : header.interceptor.ts | app.component.ts 
 
 ---
 
@@ -288,23 +298,25 @@ Cumule les authentifications
 - Utilisation de UserDetails#getAuthorithies > List des roles de l'utilisateur
 - Dans le builder utiliser `.hasRole()` (Voir les exemples)
 - Sur les methodes/Classe l'annotation `@RolesAllowed/@Secured`
+
 ---
 
 ### Mise en place dans la conf global*
+
 Exemple : 5-role
+
 ```java
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
         http
-        .authorizeHttpRequests((authz) ->
-                authz.antMatchers(HttpMethod.GET, "/**").authenticated()
-                        .antMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN"))
+        .authorizeHttpRequests((authz)->
+        authz.antMatchers(HttpMethod.GET,"/**").authenticated()
+        .antMatchers(HttpMethod.POST,"/**").hasAuthority("ADMIN"))
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
         return http.build();
-    }
+        }
 
 ```
-
 
 ---
 
