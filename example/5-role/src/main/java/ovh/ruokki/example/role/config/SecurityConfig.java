@@ -30,8 +30,6 @@ public class SecurityConfig {
                 authz.antMatchers(HttpMethod.GET, "/**").authenticated()
                         .antMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN"))
         .httpBasic(withDefaults())
-                .cors().disable()
-                .csrf().disable() //Desactivation de la protection csrf
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
         return http.build();
     }

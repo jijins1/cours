@@ -288,6 +288,23 @@ Cumule les authentifications
 - Utilisation de UserDetails#getAuthorithies > List des roles de l'utilisateur
 - Dans le builder utiliser `.hasRole()` (Voir les exemples)
 - Sur les methodes/Classe l'annotation `@RolesAllowed/@Secured`
+---
+
+### Mise en place dans la conf global*
+Exemple : 5-role
+```java
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+        .authorizeHttpRequests((authz) ->
+                authz.antMatchers(HttpMethod.GET, "/**").authenticated()
+                        .antMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN"))
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
+        return http.build();
+    }
+
+```
+
 
 ---
 
@@ -320,7 +337,7 @@ AccessDecisionVoter hierarchyVoter(){
 
 ---
 
-### Mise en place dans spring*
+### Mise en place d'abac dans spring*
 
 - Utiliser les annotations @PreAuthorize
 - Implementer un AccessDecisionManager (C'est compliqué)
