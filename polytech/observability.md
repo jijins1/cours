@@ -68,6 +68,51 @@ marp: true
         - Compatible avec beaucoup de systeme
         - Api simple a utiliser
 ---
+# Ajouter Micrometer : influx
+build.gradle
+```groovy
+  implementation "io.micrometer:micrometer-registry-influx:1.9.3"
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
+```
+---
+# Ajouter Micrometer : influx
+application.yaml
+```yaml
+  metrics:
+    export:
+      influx:
+        uri: http://localhost:19086
+        bucket: bitcoin
+        enabled: true
+        api-version: v2
+        org: ruokki
+        step: 5s
+        token: zsOhTZbBAq4K7t5OjagVrJgvNe4rSRe4NXiHE0A__HUDTYmrdjYF0PP2cGSqGNeSUJf8Dmj3z4Jo89wyWyPgfg==
+
+```
+
+---
+
+---
+# Ajouter Micrometer : Prometheus **A utiliser pour le projet**
+build.gradle
+```groovy
+  implementation "io.micrometer:micrometer-registry-prometheus:1.9.3"
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
+```
+---
+# Ajouter Micrometer : Prometheus **A utiliser pour le projet**
+application.yaml
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+```
+---
+
+
 # Les differents type de mesure
 - Les Compteurs (Counter)
 - Les Durée (Timer)
