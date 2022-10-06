@@ -20,10 +20,14 @@ marp: true
 - Votre client a vus les premiers prototype de l'application
 - Il ne le trouve pas tres beau...
 - Ajouter le design system de google à votre application pour rendre votre application plus user friendly.
-  - Composant à remplacer au frontOffice: 
-    - ![](assets/material_front.png)
-  - Composant à remplacer au backOffice:
-    - ![](assets/material-back.png)
+---
+# Partie 3 FrontOffice
+- Composant à remplacer au frontOffice: 
+  - ![](assets/material_front.png)
+---
+# Partie 3 BackOffice
+- Composant à remplacer au backOffice:
+  - ![](assets/material-back.png)
 --- 
 # Partie 4
 - Votre client à pris connaissance du projet FranceConnect et vous demande de l'integrer au frontOffice
