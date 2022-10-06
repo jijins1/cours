@@ -2,7 +2,7 @@
 marp: true
 
 ---
-# Partie 1
+# Partie 1 
 - Votre client se demande ce qu'il se passe si un utilisateur frontOffice tombe pas hasard sur le backOffice. Il pense (à juste titre) qu'ajouter un ecran de login au back serait plus sûre)
 - Sur votre backOffice mettre en place une basic auth
     - Si l'utilisateur n'est pas connecté, il est redirigé vers l'ecran de login
@@ -26,9 +26,9 @@ marp: true
     - ![](assets/material-back.png)
 --- 
 # Partie 4
-- Votre client à pris conaissance du projet FranceConnect et vous demande de l'integrer au frontOffice
-- Ajouter au front office la possibilité de s'authentifier via france connect 
-  - Le formulaire à remplir par l'utilisateur sera pres rempli avec les info recurer via franceConnect
+- Votre client à pris connaissance du projet FranceConnect et vous demande de l'integrer au frontOffice
+- Ajouter au frontOffice la possibilité de s'authentifier via france connect 
+  - Le formulaire à remplir par l'utilisateur sera pres rempli avec les infos recuperer via FranceConnect
   - Il faut utiliser OpenIdConnect
-  - Une fois connecté sur france connect on est redirigé vers l'accueil (... c'est pas user friendly mais c'est plus simple)
-  - 
+  - Une fois connecté sur FranceConnect on est redirigé vers l'accueil (... c'est pas user friendly mais c'est plus simple)
+  
