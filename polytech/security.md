@@ -21,7 +21,7 @@ marp: true
 ### Ce que l'utilisateur Sait/Possede/Est
 
 - Sait : Un mot de passe, une question secrete
-- Possede : Un telephone, un token rsa, un carte d'identite
+- Possede : Un telephone, un token rsa, une carte d'identite
 - Est : Une empreinte, un visage
 
 ---
