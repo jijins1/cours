@@ -278,7 +278,7 @@ Cumule les authentifications
     - Generateur de token
     - Sms
     - ...
-
+---
 ## Authorization
 ---
 
