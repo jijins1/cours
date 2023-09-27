@@ -296,7 +296,7 @@ Cumule les authentifications
 ### Gestion de roles Spring
 
 - Utilisation de UserDetails#getAuthorithies > List des roles de l'utilisateur
-- Dans le builder utiliser `.hasRole()` (Voir les exemples)
+- Dans le builder utiliser `.hasRole()/hasAuthority()` (Voir les exemples)
 - Sur les methodes/Classe l'annotation `@RolesAllowed/@Secured`
 
 ---
@@ -392,11 +392,6 @@ AccessDecisionVoter hierarchyVoter(){
 
 ---
 
-### Discovery service
-
-Auto decouverte de la configuration openID
-${issuer_url}/.well-known/openid-configuration
----
 
 ### OpenId Connect (OIDC)
 
@@ -404,6 +399,12 @@ ${issuer_url}/.well-known/openid-configuration
     - Basé sur Oauth
     - Principe similaire à OAuth
     - L'authorization serveur va partager les informations de l'utilisateur dans le token
+
+---
+### Discovery service
+
+Auto decouverte de la configuration openID
+${issuer_url}/.well-known/openid-configuration
 
 ---
 

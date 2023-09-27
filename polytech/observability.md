@@ -4,8 +4,9 @@ marp: true
 # Observabilité*
 - Ce n'est pas du monitoring
 - Ce n'est pas de l'alerting c'est le reste
+
 ---
-# Monitoring
+## Monitoring
 - Verifier à un intervalle regulier une assertion
 - (Un test unitaire en prod)
 - Permet de detecter des pannes que l'on peut prevoir
@@ -16,32 +17,46 @@ marp: true
     - Detecter des pannes inconnu
     - Aider à la resolution des bug
 ---
-# Alerting 
+## Alerting 
 - Prevenir XXX quand une panne est detecté 
 - Permet :
     - De reagir à la detection d'une panne
 ---
-# Les logs
+## Les logs
 - Permet : 
    - Suivre une action en particulier 
 - Ne permet pas : 
-   - D'avoir une vision au long terme
+   - D'avoir une vision global
 ---
-# Observabilite*
+## Observabilite*
 - Permet :
     - De comprendre une panne
     - Faciliter la resolution d'une panne
     - (Et être sûre qu'on est sorti de la panne)
 - Ne remplace pas le monitoring, les logs et l'alerting
 ---
-# Pourquoi l'observabilite*
+## Pourquoi l'observabilite*
 - Des systeme de plus en plus complexe
 - Des Disponibilités de plus en plus haute 
 ---
-# Exemple d'outil pour l'observabilite*
+## Exemple d'outil pour l'observabilite*
 ![Viceral](assets/visczeral.png)
 - Permet de voir les requetes en temps reels
 - Cas d'usage : Un des Datacenters qui n'est pas rallumer
+---
+# Open telemetry (Otel)
+4 Signaux  : 
+ - Logs 
+ - Metrics
+ - Traces
+ - Baggage*
+
+---
+# Comment bien logguer ?
+- Utiliser le bon niveau
+   - Error, Warning, Info, Debug, Trace 
+- Logguer les ecritures
+- Aggreger les logs
 
 ---
 # C'est quoi une metrique ? 
@@ -51,14 +66,14 @@ marp: true
     - Un nombre de ressource reservée
     - ....
 ---
-# Type de recuperation des metriques
+# Type de recuperation des metriques*
 - Scrapping : Le systeme va interroger votre appli pour récuperer les métriques
     - Prometheus 
 - Push : Votre appli va pousser les information vers le systeme
     - InfluxDb
     -...
 ---
-# Comment ajouter des metriques dans votre app 
+# Comment ajouter des metriques dans votre app * 
 - A la main :
     - En appelant ou ajoutant un endpoint a votre application
     - Ce n'est pas une bonne idée
@@ -68,14 +83,14 @@ marp: true
         - Compatible avec beaucoup de systeme
         - Api simple a utiliser
 ---
-# Ajouter Micrometer : influx
+# Ajouter Micrometer : influx *
 build.gradle
 ```groovy
   implementation "io.micrometer:micrometer-registry-influx:1.9.3"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
 ```
 ---
-# Ajouter Micrometer : influx
+# Ajouter Micrometer : influx *
 application.yaml
 ```yaml
   metrics:
@@ -108,7 +123,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus,metrics
+        include: health,info,metrics
 ```
 ---
 
@@ -232,3 +247,18 @@ registry.counter("nbCall", "path", path).increment()
 ```java 
 registry.config("serverName", InetAddress.getLocalHost().getHostName());
 ```
+--- 
+# Les traces
+1. Quand une requete arrivent dans le systeme on lui donne un traceId
+2. On fait suivre le traceId durant toute la durée de la requete
+3. Et on decoupe l'appel en span
+---
+# Les traces - schema
+ ![Mermaid - span trace](assets/span-trace.png)
+
+
+# Les traces à quoi ca sert ? 
+ - Lié les lignes de log 
+ - Visualiser les communications entre service
+ - Correler les logs et les metriques
+ - Visualiser les points de lenteurs de vos requetes
