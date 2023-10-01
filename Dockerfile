@@ -1,4 +1,4 @@
-FROM node:18.10.0-alpine3.15 as build
+FROM node:18.18.0-alpine3.18 as build
 RUN apk add --no-cache  chromium --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main
 
 RUN npm install -g  @marp-team/marp-cli@latest
