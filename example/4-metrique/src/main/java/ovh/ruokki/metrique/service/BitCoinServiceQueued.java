@@ -4,6 +4,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
 import ovh.ruokki.metrique.model.BitCoin;
 
 import org.slf4j.Logger;
@@ -20,19 +22,27 @@ public class BitCoinServiceQueued implements BitcoinService {
     
     private final BitcoinService bitcoinService;
     private final Executor executor;
+    private final Tracer tracer;
     
     @Autowired
-    public BitCoinServiceQueued(BitcoinService bitcoinService,@Qualifier("bitcoinQueue") Executor executor) {
+    public BitCoinServiceQueued(BitcoinService bitcoinService,@Qualifier("bitcoinQueue") Executor executor, final Tracer tracer) {
         
         this.bitcoinService = bitcoinService;
         this.executor = executor;
+        this.tracer = tracer;
     }
     
     @Override
     public BitCoin miner() {
         try {
+            
             log.info("Add request to the queue");
-            return CompletableFuture.supplyAsync(this.bitcoinService::miner, executor).get();
+            Span span = this.tracer.currentSpan();
+            return CompletableFuture.supplyAsync(() -> {
+                try(var scopedSpan = this.tracer.withSpan(span)){
+                    return this.bitcoinService.miner();
+                }
+            }, executor).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }

@@ -18,13 +18,14 @@ dependencies {
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
   implementation 'org.springframework.boot:spring-boot-starter'
+  implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
   runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
    
   implementation 'io.micrometer:micrometer-tracing-bridge-brave'//Trace
-  
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-aop"
+  implementation "io.micrometer:micrometer-registry-influx"
 
 
 

@@ -10,7 +10,7 @@ export const authCodeFlowConfig: AuthConfig = {
 
   // The SPA's id. The SPA is registerd with this id at the auth-server
   // clientId: 'server.code',
-  clientId: '866645626978-q8kpvoja0c6f3oub3kpooh92p0u1tukq.apps.googleusercontent.com',
+  clientId: '866645626978-njpvnrhltecssvh0hfji0ofuivj8m3m4.apps.googleusercontent.com',
 
   oidc:true,
   scope: 'openid email profile',

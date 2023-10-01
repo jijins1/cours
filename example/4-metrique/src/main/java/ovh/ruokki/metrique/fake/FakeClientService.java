@@ -1,8 +1,9 @@
 package ovh.ruokki.metrique.fake;
 
-
 import java.util.Random;
 
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
 import ovh.ruokki.metrique.service.BitcoinService;
 
 import org.slf4j.Logger;
@@ -21,21 +22,23 @@ class FakeClientService implements CommandLineRunner {
     private final BitcoinService bitcoinService;
     private final ThreadPoolTaskExecutor fakeClientExecutor;
     private final Random random;
+    private final Tracer tracer;
     
-    public FakeClientService(final BitcoinService bitcoinService,@Qualifier("fakeClientExecutor") ThreadPoolTaskExecutor fakeClientExecutor, Random random) {
+    public FakeClientService(final BitcoinService bitcoinService, @Qualifier("fakeClientExecutor") ThreadPoolTaskExecutor fakeClientExecutor, Random random, final Tracer tracer) {
         this.bitcoinService = bitcoinService;
         this.fakeClientExecutor = fakeClientExecutor;
         this.random = random;
+        this.tracer = tracer;
     }
     
     @Override
     public void run(final String... args)
             throws Exception {
-        while (true){
-            if(this.fakeClientExecutor.getActiveCount()< this.fakeClientExecutor.getCorePoolSize()){
+        while (true) {
+            if (this.fakeClientExecutor.getActiveCount() < this.fakeClientExecutor.getCorePoolSize()) {
                 log.info("Demarrage d'un client");
                 this.fakeClientExecutor.execute(this::addMiningClient);
-            }else {
+            } else {
                 log.info("Attendre que les requetes termine un peu");
                 Thread.sleep(200000);
             }
@@ -44,11 +47,28 @@ class FakeClientService implements CommandLineRunner {
     }
     
     private void addMiningClient() {
-        while (this.random.nextBoolean()) {
-            log.info("Heho heho");
-            bitcoinService.miner();
+        int minerNumber = new Random().nextInt();
+        Span miner = this.tracer.nextSpan().name("Miner"+minerNumber);
+        int succes = 0;
+        Span mining = miner;
+        try (Tracer.SpanInScope ws = this.tracer.withSpan(mining.start())) {
+            log.info("Add mining client {}", minerNumber);
             
+            while (this.random.nextBoolean()) {
+                mining.end();
+                mining = this.tracer.nextSpan(mining).name("mining"+succes);
+                try (Tracer.SpanInScope ws2 = this.tracer.withSpan(mining.start())) {
+                    
+                    log.info("Heho heho {}", succes);
+                    succes++;
+                    bitcoinService.miner();
+                }
+                
+            }
+            log.info("Client termine");
+        } finally {
+            mining.end();
         }
-        log.info("Client termine");
+        
     }
 }
