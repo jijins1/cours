@@ -9,15 +9,10 @@ COPY ./polytech/observability.md .
 COPY ./polytech/disclaimer.md .
 COPY ./polytech/tp.md .
 
-RUN marp design-system.md --pdf
 RUN marp design-system.md
-RUN marp security.md --pdf
 RUN marp security.md
-RUN marp observability.md --pdf
 RUN marp observability.md
-RUN marp disclaimer.md --pdf
 RUN marp disclaimer.md
-RUN marp tp.md --pdf
 RUN marp tp.md
 
 
