@@ -3,7 +3,7 @@ marp: true
 
 ---
 # Partie 1 
-- Votre client se demande ce qu'il se passe si un utilisateur frontOffice tombe pas hasard sur le backOffice. Il pense (à juste titre) qu'ajouter un ecran de login au back serait plus sûre)
+- Votre client se demande ce qu'il se passe si un utilisateur frontOffice tombe pars hasard sur le backOffice. Il pense (à juste titre) qu'ajouter un écran de login au back serait plus sûre)
 - Sur votre backOffice mettre en place une basic auth
     - Si l'utilisateur n'est pas connecté, il est redirigé vers l'ecran de login
     - Votre api doit lancer une erreur si l'utilisateur n'est pas connecté
