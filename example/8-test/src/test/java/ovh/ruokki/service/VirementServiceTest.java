@@ -25,23 +25,56 @@ class VirementServiceTest {
     }
     
     @Test
-    public void test1() {
+    public void itShouldValidatVirement() {
+        //given
+        Compte source = new Compte();
+        Compte destination = new Compte();
+        source.setSolde(100);
+        destination.setSolde(122);
+        source.setNumeroCompte("source");
+        destination.setNumeroCompte("destination");
+        Mockito.doReturn(Optional.of(source)).when(compteRepository).findById("source");
+        Mockito.doReturn(Optional.of(destination)).when(compteRepository).findById("destination");
         
-        var compteSource = new Compte() ;
-        var compteCible = new Compte();
         
-        compteSource.setNumeroCompte("Source");
-        compteCible.setNumeroCompte("Cible");
-        compteSource.setSolde(10);
-        compteCible.setSolde(0);
-        Mockito.doReturn(Optional.of(compteCible)).when(compteRepository).findById("Cible");
-        Mockito.doReturn(Optional.of(compteSource)).when(compteRepository).findById("Source");
-        var result = virementService.validationVirement("Source","Cible",1);
+        //when
+        boolean isValid = virementService.validationVirement("source","destination", 80);
+        //then
+        Assertions.assertThat(isValid).isTrue();
+        Assertions.assertThat(destination.getSolde()).isEqualTo(202);
+        Assertions.assertThat(source.getSolde()).isEqualTo(20);
+    }
+    @Test
+    public void itShouldThrowErrorIfNotSource() {
         
-        Assertions.assertThat(result).isTrue();
-        Assertions.assertThat(compteSource.getSolde()).isEqualTo(9);
-        Assertions.assertThat(compteCible.getSolde()).isEqualTo(1);
+        Mockito.doReturn(Optional.empty()).when(compteRepository).findById("source");
         
+        
+        
+        //when
+        Assertions.assertThatThrownBy( ()->virementService.validationVirement("source","destination", 80))
+                .isInstanceOf(RuntimeException.class);
+        //then
+    }
+    @Test
+    public void soldIsEnough() {
+        //given
+        Compte source = new Compte();
+        Compte destination = new Compte();
+        source.setSolde(100);
+        destination.setSolde(122);
+        source.setNumeroCompte("source");
+        destination.setNumeroCompte("destination");
+        Mockito.doReturn(Optional.of(source)).when(compteRepository).findById("source");
+        Mockito.doReturn(Optional.of(destination)).when(compteRepository).findById("destination");
+        
+        
+        //when
+        boolean isValid = virementService.validationVirement("source","destination", 404);
+        //then
+        Assertions.assertThat(isValid).isFalse();
+        Assertions.assertThat(destination.getSolde()).isEqualTo(122);
+        Assertions.assertThat(source.getSolde()).isEqualTo(100);
     }
 
 }

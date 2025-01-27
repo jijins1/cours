@@ -25,21 +25,8 @@ import org.slf4j.LoggerFactory;
 public class SecurityConfig {
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     
-    
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
-        http
-        .authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
-        .httpBasic(withDefaults())
-                .cors().disable()
-                .csrf().disable() //Desactivation de la protection csrf
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
-        return http.build();
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

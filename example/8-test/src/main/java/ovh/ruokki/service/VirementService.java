@@ -1,5 +1,7 @@
 package ovh.ruokki.service;
 
+import java.util.function.Consumer;
+
 import ovh.ruokki.domain.Compte;
 import ovh.ruokki.repository.CompteRepository;
 
@@ -10,21 +12,23 @@ import org.springframework.stereotype.Service;
 public class VirementService {
     
     
-    CompteRepository compteRepository;
+    private final CompteRepository compteRepository;
     
     public VirementService(final CompteRepository compteRepository) {
         this.compteRepository = compteRepository;
     }
     
-    public boolean validationVirement(final String source, final String cible, final double i) {
-        Compte compteSource = compteRepository.findById(source).get();
-        Compte compteCible = compteRepository.findById(cible).get();
-        compteSource.setSolde(compteSource.getSolde()-i);
-        compteCible.setSolde(compteCible.getSolde()+i);
+    public boolean validationVirement(final String source, final String destination, final double montant) {
+        Compte compteSource = compteRepository.findById(source).orElseThrow(() -> new RuntimeException());
+        Compte compteDestination = compteRepository.findById(destination).orElseThrow(() -> new RuntimeException());
         
-        this.compteRepository.save(compteCible);
-        this.compteRepository.save(compteSource);
+        if(montant >= 2 * compteSource.getSolde())  return false;
         
+        compteSource.setSolde(compteSource.getSolde()-montant);
+        compteDestination.setSolde(compteDestination.getSolde()+montant);
+        
+        compteRepository.save(compteSource);
+        compteRepository.save(compteDestination);
         return true;
     }
 }

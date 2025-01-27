@@ -25,24 +25,22 @@ class VirementServiceIT {
     
     @Test
     public void test1() {
-        
-        var compteSource = new Compte() ;
-        var compteCible = new Compte();
-        
-        compteSource.setNumeroCompte("Source");
-        compteCible.setNumeroCompte("Cible");
-        compteSource.setSolde(10);
-        compteCible.setSolde(0);
-        
-        this.compteRepository.save(compteCible);
-        this.compteRepository.save(compteSource);
-
-        var result = virementService.validationVirement("Source","Cible",1);
-        
-        
-        Assertions.assertThat(result).isTrue();
-        Assertions.assertThat(this.compteRepository.findById("Source").get().getSolde()).isEqualTo(9);
-        Assertions.assertThat(this.compteRepository.findById("Cible").get().getSolde()).isEqualTo(1);
+        //given
+        Compte source = new Compte();
+        Compte destination = new Compte();
+        source.setSolde(100);
+        destination.setSolde(122);
+        source.setNumeroCompte("source");
+        destination.setNumeroCompte("destination");
+        compteRepository.save(source);
+        compteRepository.save(destination);
+        //when
+        boolean isValid = virementService.validationVirement("source","destination", 80);
+        //then
+        Optional<Compte> sourceBase = compteRepository.findById("source");
+        Optional<Compte> destinationBase = compteRepository.findById("destination");
+        Assertions.assertThat(destinationBase.get().getSolde()).isEqualTo(202);
+        Assertions.assertThat(sourceBase.get().getSolde()).isEqualTo(20);
         
     }
 
