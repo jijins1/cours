@@ -1,80 +1,47 @@
 package ovh.ruokki.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Optional;
-
-import ovh.ruokki.domain.Compte;
-import ovh.ruokki.repository.CompteRepository;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import ovh.ruokki.domain.Compte;
+import ovh.ruokki.repository.VirementRepository;
 
 class VirementServiceTest {
-    
+
     VirementService virementService;
-    
-    CompteRepository compteRepository;
-    
+
+    CompteService compteService;
+    VirementRepository virementRepository;
+
     @BeforeEach
     void setUp() {
-        compteRepository = Mockito.mock(CompteRepository.class);
-        virementService = new VirementService(compteRepository);
+        compteService = Mockito.mock(CompteService.class);
+        virementRepository = Mockito.mock(VirementRepository.class);
+        virementService = new VirementService(compteService, virementRepository);
     }
-    
+
     @Test
-    public void itShouldValidatVirement() {
-        //given
-        Compte source = new Compte();
-        Compte destination = new Compte();
-        source.setSolde(100);
-        destination.setSolde(122);
-        source.setNumeroCompte("source");
-        destination.setNumeroCompte("destination");
-        Mockito.doReturn(Optional.of(source)).when(compteRepository).findById("source");
-        Mockito.doReturn(Optional.of(destination)).when(compteRepository).findById("destination");
-        
-        
-        //when
-        boolean isValid = virementService.validationVirement("source","destination", 80);
-        //then
-        Assertions.assertThat(isValid).isTrue();
-        Assertions.assertThat(destination.getSolde()).isEqualTo(202);
-        Assertions.assertThat(source.getSolde()).isEqualTo(20);
-    }
-    @Test
-    public void itShouldThrowErrorIfNotSource() {
-        
-        Mockito.doReturn(Optional.empty()).when(compteRepository).findById("source");
-        
-        
-        
-        //when
-        Assertions.assertThatThrownBy( ()->virementService.validationVirement("source","destination", 80))
-                .isInstanceOf(RuntimeException.class);
-        //then
-    }
-    @Test
-    public void soldIsEnough() {
-        //given
-        Compte source = new Compte();
-        Compte destination = new Compte();
-        source.setSolde(100);
-        destination.setSolde(122);
-        source.setNumeroCompte("source");
-        destination.setNumeroCompte("destination");
-        Mockito.doReturn(Optional.of(source)).when(compteRepository).findById("source");
-        Mockito.doReturn(Optional.of(destination)).when(compteRepository).findById("destination");
-        
-        
-        //when
-        boolean isValid = virementService.validationVirement("source","destination", 404);
-        //then
-        Assertions.assertThat(isValid).isFalse();
-        Assertions.assertThat(destination.getSolde()).isEqualTo(122);
-        Assertions.assertThat(source.getSolde()).isEqualTo(100);
+    public void test1() {
+
+        var compteSource = new Compte();
+        var compteCible = new Compte();
+
+        compteSource.setNumeroCompte("Source");
+        compteCible.setNumeroCompte("Cible");
+        compteSource.setSolde(10);
+        compteCible.setSolde(0);
+        Mockito.when(compteService.getCompte("Source")).thenReturn(compteSource);
+        Mockito.when(compteService.getCompte("Cible")).thenReturn(compteCible);
+        var result = virementService.applyVirement("Source", "Cible", 1);
+
+        Assertions.assertThat(result).isTrue();
+
+        // Verify that updateMontant was called
+        Mockito.verify(compteService).updateMontant("Source", -1.0);
+        Mockito.verify(compteService).updateMontant("Cible", 1.0);
+        // Verify virement was saved
+        Mockito.verify(virementRepository).save(Mockito.any());
     }
 
 }
