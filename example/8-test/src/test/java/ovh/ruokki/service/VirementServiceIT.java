@@ -35,7 +35,7 @@ class VirementServiceIT {
         compteRepository.save(source);
         compteRepository.save(destination);
         //when
-        boolean isValid = virementService.validationVirement("source","destination", 80);
+        boolean isValid = virementService.applyVirement("source","destination", 80);
         //then
         Optional<Compte> sourceBase = compteRepository.findById("source");
         Optional<Compte> destinationBase = compteRepository.findById("destination");

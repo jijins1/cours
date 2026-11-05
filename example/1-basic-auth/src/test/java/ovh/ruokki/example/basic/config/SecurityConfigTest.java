@@ -9,7 +9,7 @@ import ovh.ruokki.example.basic.repository.UtilisateurRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +36,6 @@ public class SecurityConfigTest {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setLogin("toto");
         utilisateur.setPassword(passwordEncoder.encode("tata"));
-        utilisateur.setId(0l);
         repository.save(utilisateur);
         //when
         mockMvc.perform(MockMvcRequestBuilders.get("/bieres")

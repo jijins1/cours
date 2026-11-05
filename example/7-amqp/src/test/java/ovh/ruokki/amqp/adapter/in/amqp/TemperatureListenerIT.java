@@ -11,12 +11,10 @@ import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.GenericContainer;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.rabbitmq.RabbitMQContainer;
 
 @Testcontainers
 @SpringBootTest
@@ -26,16 +24,8 @@ class TemperatureListenerIT {
     @Autowired
     RabbitTemplate template;
     @Container
-    static GenericContainer rabbit = new GenericContainer(DockerImageName.parse("rabbitmq:3.9.28-management"))
-            .withExposedPorts(5672);
-    
-    
-    @DynamicPropertySource
-    static void redisProperties(DynamicPropertyRegistry registry) {
-        rabbit.start();
-        registry.add("spring.rabbitmq.host", rabbit::getHost);
-        registry.add("spring.rabbitmq.port", rabbit::getFirstMappedPort);
-    }
+    @ServiceConnection
+    static RabbitMQContainer rabbit = new RabbitMQContainer("rabbitmq:4-management");
     
     @BeforeEach
     void setUp() {

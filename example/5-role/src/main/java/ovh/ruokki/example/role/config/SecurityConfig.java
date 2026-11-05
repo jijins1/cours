@@ -27,10 +27,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
         .authorizeHttpRequests((authz) ->
-                authz.antMatchers(HttpMethod.GET, "/**").authenticated()
-                        .antMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN"))
+                authz.requestMatchers(HttpMethod.GET, "/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN"))
         .httpBasic(withDefaults())
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//On rend les session stateless
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));//On rend les session stateless
         return http.build();
     }
 

@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -26,24 +25,26 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 public class SecurityConfig {
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, Converter<Jwt, ? extends AbstractAuthenticationToken> authenticationConverter)
             throws Exception {
-        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(authenticationConverter);
-        http.anonymous();
-        http.cors().configurationSource(corsConfigurationSource());
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(authenticationConverter)));
+        http.anonymous(withDefaults());
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         
-        http.csrf().csrfTokenRepository(new CookieCsrfTokenRepository());
+        http.csrf(csrf -> csrf.csrfTokenRepository(new CookieCsrfTokenRepository()));
         
-        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+        http.exceptionHandling(exceptions -> exceptions.authenticationEntryPoint((request, response, authException) -> {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        });
-        http.authorizeRequests()
-                .anyRequest().authenticated();
+        }));
+        http.authorizeHttpRequests(authz -> authz
+                .anyRequest().authenticated());
         return http.build();
     }
     

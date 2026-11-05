@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VirementController {
     @PostMapping(path="/virements")
     public void post(@RequestBody VirementDto virementDto) {
-        virementService.validationVirement(virementDto.getSource(), virementDto.getDestination(), virementDto.getMontant());
+        virementService.applyVirement(virementDto.getSource(), virementDto.getDestination(), virementDto.getMontant());
     }
     
     public VirementController(final VirementService virementService) {

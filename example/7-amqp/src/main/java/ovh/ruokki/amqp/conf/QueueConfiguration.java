@@ -23,8 +23,9 @@ public class QueueConfiguration {
     }
     @Bean
     public Queue temperatureTwelve() {
+        // RabbitMQ 4 refuse les queues non durables partagées entre connexions
         return QueueBuilder
-                .nonDurable(TWELVE_QUEUE)
+                .durable(TWELVE_QUEUE)
                 .build();
     }
     
