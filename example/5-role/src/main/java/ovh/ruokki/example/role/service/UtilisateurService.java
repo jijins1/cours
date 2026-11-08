@@ -3,7 +3,7 @@ package ovh.ruokki.example.role.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import ovh.ruokki.example.role.entity.Utilisateur;
 import ovh.ruokki.example.role.repository.UtilisateurRepository;

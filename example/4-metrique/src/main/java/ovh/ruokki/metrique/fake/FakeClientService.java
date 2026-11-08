@@ -32,8 +32,22 @@ class FakeClientService implements CommandLineRunner {
     }
     
     @Override
-    public void run(final String... args)
-            throws Exception {
+    public void run(final String... args) {
+        // La boucle tourne à part : sinon le démarrage ne se termine jamais
+        // et /actuator/health reste OUT_OF_SERVICE
+        Thread.ofVirtual().name("fake-clients").start(this::lancerClients);
+    }
+    
+    private void lancerClients() {
+        try {
+            boucleClients();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    private void boucleClients()
+            throws InterruptedException {
         while (true) {
             if (this.fakeClientExecutor.getActiveCount() < this.fakeClientExecutor.getCorePoolSize()) {
                 log.info("Demarrage d'un client");
